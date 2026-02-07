@@ -1143,11 +1143,16 @@ body {
 .maps-modal-body {
     height: 400px;
     position: relative;
-    flex: 1;
-    min-height: 250px;
+    min-height: 300px;
+    background: #e5e7eb;
 }
 
 #leafletMap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
     height: 100%;
     z-index: 1;
