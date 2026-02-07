@@ -2,6 +2,13 @@
    FERAMCER EIRL - Landing Page JavaScript
    ========================================== */
 
+// ==========================================
+// SUPABASE CONFIGURATION
+// ==========================================
+const SUPABASE_URL = 'https://qfrelimflhxeuxebhkka.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmcmVsaW1mbGh4ZXV4ZWJoa2thIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0Nzk4MjcsImV4cCI6MjA4NjA1NTgyN30.ZhW1zM69wPX9Xx-DdkcYygFI6ZvXMS3gG4TE0y6X2RI';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 document.addEventListener('DOMContentLoaded', function () {
 
     // ==========================================
@@ -31,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ==========================================
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
-    
+
     // Check for saved theme preference or default to system preference
     function getPreferredTheme() {
         const savedTheme = localStorage.getItem('theme');
@@ -41,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Check system preference
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-    
+
     // Apply theme
     function setTheme(theme) {
         if (theme === 'dark') {
@@ -51,17 +58,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         localStorage.setItem('theme', theme);
     }
-    
+
     // Initialize theme on page load
     setTheme(getPreferredTheme());
-    
+
     // Toggle theme on button click
     if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
+        themeToggle.addEventListener('click', function () {
             const currentTheme = html.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             setTheme(newTheme);
-            
+
             // Add a subtle animation feedback
             themeToggle.style.transform = 'scale(0.9)';
             setTimeout(() => {
@@ -69,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 150);
         });
     }
-    
+
     // Listen for system theme changes
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
         if (!localStorage.getItem('theme')) {
@@ -477,7 +484,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (quoteForm) {
-        quoteForm.addEventListener('submit', function (e) {
+        quoteForm.addEventListener('submit', async function (e) {
             e.preventDefault();
 
             // Get form values
@@ -499,6 +506,27 @@ document.addEventListener('DOMContentLoaded', function () {
                 showNotification('Por favor selecciona la ubicación de tu proyecto.', 'error');
                 btnUbicacion.focus();
                 return;
+            }
+
+            // Save to Supabase
+            try {
+                const { error } = await supabase
+                    .from('leads')
+                    .insert([{
+                        nombre: nombre,
+                        telefono: telefono,
+                        tipo_cerco: altura,
+                        metros_lineales: parseFloat(metros),
+                        lat: parseFloat(ubicacionLat),
+                        lng: parseFloat(ubicacionLng),
+                        direccion: ubicacionTexto
+                    }]);
+
+                if (error) {
+                    console.error('Supabase error:', error);
+                }
+            } catch (err) {
+                console.error('Error saving lead:', err);
             }
 
             // Build Google Maps link for the location
