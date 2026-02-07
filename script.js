@@ -8,15 +8,15 @@
 const SUPABASE_URL = 'https://qfrelimflhxeuxebhkka.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmcmVsaW1mbGh4ZXV4ZWJoa2thIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0Nzk4MjcsImV4cCI6MjA4NjA1NTgyN30.ZhW1zM69wPX9Xx-DdkcYygFI6ZvXMS3gG4TE0y6X2RI';
 
-// Supabase client - initialized after DOM loads
-let supabase = null;
+// Supabase client - initialized after DOM loads (named differently to avoid conflict with SDK global)
+let supabaseClient = null;
 
 document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize Supabase safely
     try {
         if (window.supabase && typeof window.supabase.createClient === 'function') {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             console.log('Supabase initialized successfully');
         } else {
             console.warn('Supabase SDK not loaded - form will redirect to WhatsApp only');
@@ -537,9 +537,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Save to Supabase (if available)
-            if (supabase) {
+            if (supabaseClient) {
                 try {
-                    const { error } = await supabase
+                    const { error } = await supabaseClient
                         .from('leads')
                         .insert([{
                             nombre: nombre,
