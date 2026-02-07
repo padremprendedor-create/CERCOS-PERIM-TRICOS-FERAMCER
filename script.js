@@ -328,12 +328,24 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.style.overflow = 'hidden';
 
             // Initialize map when modal opens (needs to be visible)
+            // Use multiple timeouts to ensure proper rendering
             setTimeout(() => {
+                console.log('Initializing map...');
                 initMap();
-                if (map) map.invalidateSize();
+                if (map) {
+                    console.log('Map exists, calling invalidateSize');
+                    map.invalidateSize();
+                    // Call invalidateSize again after a delay for good measure
+                    setTimeout(() => {
+                        map.invalidateSize();
+                        console.log('Map invalidateSize called again');
+                    }, 300);
+                } else {
+                    console.error('Map object is null after initMap!');
+                }
                 // Focus search input
                 if (searchInput) searchInput.focus();
-            }, 150);
+            }, 250);
         });
     } else {
         console.error('btnUbicacion not found in DOM!');
