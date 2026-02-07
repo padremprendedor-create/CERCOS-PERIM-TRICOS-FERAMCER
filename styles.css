@@ -1331,11 +1331,12 @@ body {
     z-index: 1;
     box-shadow: var(--shadow-xl);
     border: 1px solid var(--slate-200);
-    transition: all var(--transition-base);
     overflow: hidden;
-    /* Initial state for scroll animation */
-    opacity: 0;
-    transform: translateY(40px);
+    /* Initial state for scroll animation - visible by default for production */
+    opacity: 1;
+    transform: translateY(0);
+    /* Transitions for hover and animations */
+    transition: transform 0.6s ease, box-shadow var(--transition-base), opacity 0.6s ease;
 }
 
 .step-card.animate-in {
