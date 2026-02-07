@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Cotiza tu Cerco Perimétrico de Concreto en menos de 2 minutos. Instalación y transporte incluidos. FERAMCER EIRL - Protege tu terreno con solución segura y profesional.">
+    <meta name="keywords"
+        content="cerco perimétrico, cerco de concreto, cercos prefabricados, protección de terrenos, Perú">
+    <title>Cercos Perimétricos de Concreto | FERAMCER EIRL - Cotización Inmediata</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header header-dark">
+        <div class="container header-content">
+            <div class="header-brand">
+                <img src="LOGO Feramcer hd.png" alt="FERAMCER EIRL Logo" class="logo">
+                <span class="header-company-name">FERAMCER E.I.R.L.</span>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
+                    <span class="theme-toggle-icon icon-moon">🌙</span>
+                    <span class="theme-toggle-icon icon-sun">☀️</span>
+                </button>
+                <a href="#cotizacion" class="header-cta">Cotizar Ahora</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">Cotizador Inteligente v1.0</div>
+                <h1 class="hero-title">
+                    Cotiza tu <span class="highlight">Cerco Perimétrico de Concreto</span> en Menos de 2 Minutos
+                </h1>
+                <p class="hero-subtitle">
+                    Protege tu terreno hoy mismo con una solución segura, rápida y profesional.<br>
+                    <strong>Precio estimado inmediato</strong>, sin esperas ni llamadas innecesarias.
+                </p>
+                <div class="hero-bullets">
+                    <div class="hero-bullet">Instalación incluida</div>
+                    <div class="hero-bullet">Transporte incluido</div>
+                    <div class="hero-bullet">Garantía estándar</div>
+                    <div class="hero-bullet">Atención 24/7</div>
+                </div>
+                <a href="#cotizacion" class="cta-button pulse">
+                    <span>👉</span> Obtener cotización inmediata
+                </a>
+            </div>
+
+            <!-- Formulario Hero Card -->
+            <div class="hero-form-card" id="cotizacion">
+                <div class="form-header">
+                    <h3>Recibe tu cotización ahora</h3>
+                    <p>Completa el formulario y recibirás tu cotización por <strong>WhatsApp</strong> al instante.</p>
+                    <div class="form-secure-badge">🔒 Datos 100% seguros y privados</div>
+                </div>
+
+                <form class="quote-form" id="quoteForm">
+                    <div class="form-group">
+                        <label for="nombre">Nombre completo</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">WhatsApp</label>
+                        <input type="tel" id="telefono" name="telefono" placeholder="Ej: 999 888 777" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="metros">Metros lineales</label>
+                            <input type="number" id="metros" name="metros" placeholder="Ej: 50" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="altura">Altura deseada</label>
+                            <select id="altura" name="altura" required>
+                                <option value="">Seleccionar</option>
+                                <option value="2.50">2.50 metros</option>
+                                <option value="3.00">3.00 metros</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Campo oculto para guardar ubicación -->
+                    <input type="hidden" id="ubicacionLat" name="ubicacionLat">
+                    <input type="hidden" id="ubicacionLng" name="ubicacionLng">
+                    <input type="hidden" id="ubicacionTexto" name="ubicacionTexto">
+
+                    <button type="button" id="btnUbicacion" class="cta-button cta-location">
+                        <span class="location-icon">📍</span> Ubicación de mi proyecto
+                    </button>
+                    <div id="ubicacionSeleccionada" class="ubicacion-display"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Diferencial -->
+    <section class="diferencial" id="por-que">
+        <div class="container">
+            <div class="diferencial-content">
+                <div class="diferencial-text">
+                    <h2 class="section-title">¿Por qué cotizar tu cerco aquí?</h2>
+                    <p class="section-description">
+                        Sabemos que cuando se trata de proteger un terreno, <strong>el tiempo importa</strong>.<br>
+                        Mientras otras empresas demoran horas o días en responder, aquí obtienes una <strong>cotización
+                            inmediata y clara</strong>.
+                    </p>
+                    <ul class="diferencial-bullets">
+                        <li><span class="check-icon">✔️</span> Cercos perimétricos de concreto prefabricado</li>
+                        <li><span class="check-icon">✔️</span> Instalación y transporte incluidos desde el inicio</li>
+                        <li><span class="check-icon">✔️</span> Ideal para terrenos vacíos, proyectos inmobiliarios e
+                            inversión</li>
+                        <li><span class="check-icon">✔️</span> Cotización automática en menos de 2 minutos</li>
+                    </ul>
+                </div>
+                <div class="diferencial-image">
+                    <img src="foto de proyecto.jpg" alt="Cerco perimétrico de concreto instalado" class="project-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Cómo Funciona -->
+    <section class="como-funciona" id="proceso">
+        <div class="container">
+            <h2 class="section-title">¿Cómo funciona?</h2>
+            <p class="section-subtitle">Proceso simple en 3 pasos. Sin complicaciones.</p>
+
+            <div class="steps-container">
+                <div class="step-card" data-step="1">
+                    <span class="step-number-bg">1</span>
+                    <div class="step-icon">📋</div>
+                    <h3>Ingresa los datos de tu terreno</h3>
+                    <p>Solo te tomará unos segundos completar el formulario.</p>
+                </div>
+
+                <div class="step-card" data-step="2">
+                    <span class="step-number-bg">2</span>
+                    <div class="step-icon">💬</div>
+                    <h3>Recibe tu cotización inmediata</h3>
+                    <p>Recibirás una cotización por WhatsApp en breve según tu información.</p>
+                </div>
+
+                <div class="step-card" data-step="3">
+                    <span class="step-number-bg">3</span>
+                    <div class="step-icon">📅</div>
+                    <h3>Agenda una visita técnica</h3>
+                    <p>Si el presupuesto te encaja, coordinamos una visita para avanzar con el proyecto.</p>
+                </div>
+            </div>
+
+            <p class="steps-note">Sin presión. Sin llamadas insistentes. <strong>Tú decides.</strong></p>
+        </div>
+    </section>
+
+    <!-- Sección Medidas -->
+    <section class="medidas" id="medidas">
+        <div class="container">
+            <h2 class="section-title">Medidas y Especificaciones</h2>
+            <p class="section-subtitle">Detalles técnicos de nuestros cercos perimétricos para garantizar la mejor
+                instalación.</p>
+
+            <div class="medidas-content">
+                <img src="MEDIDAS CERCOS.JPG" alt="Medidas del cerco perimétrico" class="medidas-img img-light">
+                <img src="MEDIDAS CERCOS DARK MODE.JPG" alt="Medidas del cerco perimétrico (Modo Oscuro)"
+                    class="medidas-img img-dark">
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Confianza -->
+    <section class="confianza" id="confianza">
+        <div class="container">
+            <div class="confianza-content">
+                <div class="confianza-icon">
+                    <span>🛡️</span>
+                </div>
+                <div class="confianza-text">
+                    <h2 class="section-title">Una solución pensada para proteger tu inversión</h2>
+                    <p class="section-description">
+                        Los cercos perimétricos de concreto son una de las formas más <strong>seguras y
+                            duraderas</strong> de proteger terrenos vacíos en Perú.<br>
+                        Nuestro proceso está diseñado para darte rapidez, claridad y seguridad desde el primer contacto.
+                    </p>
+                    <div class="confianza-grid">
+                        <div class="confianza-item">
+                            <span class="check-icon">✔️</span>
+                            <span>Material resistente y de larga duración</span>
+                        </div>
+                        <div class="confianza-item">
+                            <span class="check-icon">✔️</span>
+                            <span>Instalación profesional</span>
+                        </div>
+                        <div class="confianza-item">
+                            <span class="check-icon">✔️</span>
+                            <span>Garantía estándar incluida</span>
+                        </div>
+                        <div class="confianza-item">
+                            <span class="check-icon">✔️</span>
+                            <span>Atención inmediata todos los días</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Urgencia -->
+    <section class="urgencia">
+        <div class="container">
+            <div class="urgencia-content">
+                <div class="urgencia-icon">⏰</div>
+                <h2 class="section-title light">Evita demoras y pérdidas de tiempo</h2>
+                <p class="section-description light">
+                    La disponibilidad de instalación puede variar según la zona y la demanda.<br>
+                    <strong>Cotiza ahora</strong> y asegura prioridad para tu proyecto.
+                </p>
+                <a href="#cotizacion" class="cta-button cta-urgencia">
+                    <span>👉</span> Cotizar ahora mismo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="cta-final" id="contacto">
+        <div class="container">
+            <div class="cta-final-content">
+                <h2 class="section-title center">Cotiza tu cerco perimétrico hoy mismo</h2>
+                <p class="section-description center">
+                    Obtén tu precio estimado en menos de 2 minutos y decide con información clara y rápida.
+                </p>
+                <a href="#cotizacion" class="cta-button cta-primary large pulse">
+                    Recibir cotización inmediata
+                </a>
+                <div class="cta-final-microcopy">
+                    <p>📲 Atención automática por WhatsApp</p>
+                    <p>⏱️ Sin esperas · Sin compromiso</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <img src="LOGO Feramcer hd.png" alt="FERAMCER EIRL Logo" class="footer-logo">
+                <p class="footer-text">FERAMCER EIRL - Cercos Perimétricos de Concreto</p>
+                <p class="footer-copyright">© 2026 Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Mapa Interactivo -->
+    <div class="maps-modal" id="mapsModal">
+        <div class="maps-modal-content">
+            <div class="maps-modal-header">
+                <h3>📍 Selecciona la ubicación de tu proyecto</h3>
+                <button class="maps-modal-close" id="closeMapsModal">&times;</button>
+            </div>
+            <div class="maps-search-container">
+                <div class="maps-search-wrapper">
+                    <input type="text" id="searchLocation" class="maps-search-input"
+                        placeholder="🔍 Buscar dirección, ciudad o lugar..." autocomplete="off">
+                    <div id="searchResults" class="search-results-dropdown"></div>
+                </div>
+                <button type="button" id="searchBtn" class="maps-search-btn">🔍</button>
+            </div>
+            <div class="maps-modal-body">
+                <div id="leafletMap"></div>
+            </div>
+            <div class="maps-modal-footer">
+                <div class="maps-instructions">
+                    <p>👆 <strong>Arrastra el marcador</strong> o <strong>haz clic en el mapa</strong> para seleccionar
+                        la ubicación exacta</p>
+                    <p class="coords-display" id="coordsDisplay">Coordenadas: -9.930096, -76.242195</p>
+                </div>
+                <button class="maps-confirm-btn" id="confirmLocation">
+                    ✓ Confirmar ubicación
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
