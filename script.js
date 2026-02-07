@@ -7,9 +7,23 @@
 // ==========================================
 const SUPABASE_URL = 'https://qfrelimflhxeuxebhkka.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmcmVsaW1mbGh4ZXV4ZWJoa2thIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0Nzk4MjcsImV4cCI6MjA4NjA1NTgyN30.ZhW1zM69wPX9Xx-DdkcYygFI6ZvXMS3gG4TE0y6X2RI';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Supabase client - initialized after DOM loads
+let supabase = null;
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    // Initialize Supabase safely
+    try {
+        if (window.supabase && typeof window.supabase.createClient === 'function') {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('Supabase initialized successfully');
+        } else {
+            console.warn('Supabase SDK not loaded - form will redirect to WhatsApp only');
+        }
+    } catch (error) {
+        console.error('Error initializing Supabase:', error);
+    }
 
     // ==========================================
     // LOCATION VARIABLES
@@ -508,25 +522,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            // Save to Supabase
-            try {
-                const { error } = await supabase
-                    .from('leads')
-                    .insert([{
-                        nombre: nombre,
-                        telefono: telefono,
-                        tipo_cerco: altura,
-                        metros_lineales: parseFloat(metros),
-                        lat: parseFloat(ubicacionLat),
-                        lng: parseFloat(ubicacionLng),
-                        direccion: ubicacionTexto
-                    }]);
+            // Save to Supabase (if available)
+            if (supabase) {
+                try {
+                    const { error } = await supabase
+                        .from('leads')
+                        .insert([{
+                            nombre: nombre,
+                            telefono: telefono,
+                            tipo_cerco: altura,
+                            metros_lineales: parseFloat(metros),
+                            lat: parseFloat(ubicacionLat),
+                            lng: parseFloat(ubicacionLng),
+                            direccion: ubicacionTexto
+                        }]);
 
-                if (error) {
-                    console.error('Supabase error:', error);
+                    if (error) {
+                        console.error('Supabase error:', error);
+                    } else {
+                        console.log('Lead saved to Supabase successfully');
+                    }
+                } catch (err) {
+                    console.error('Error saving lead:', err);
                 }
-            } catch (err) {
-                console.error('Error saving lead:', err);
             }
 
             // Build Google Maps link for the location
