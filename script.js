@@ -309,10 +309,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchBtn = document.getElementById('searchBtn');
     const searchResults = document.getElementById('searchResults');
 
+    // Debug logs
+    console.log('btnUbicacion found:', !!btnUbicacion);
+    console.log('mapsModal found:', !!mapsModal);
+
     // Open maps modal
     if (btnUbicacion) {
+        console.log('Adding click listener to btnUbicacion');
         btnUbicacion.addEventListener('click', function () {
-            mapsModal.classList.add('active');
+            console.log('btnUbicacion clicked!');
+            console.log('mapsModal element:', mapsModal);
+            if (mapsModal) {
+                mapsModal.classList.add('active');
+                console.log('Added active class to mapsModal');
+            } else {
+                console.error('mapsModal is null!');
+            }
             document.body.style.overflow = 'hidden';
 
             // Initialize map when modal opens (needs to be visible)
@@ -323,6 +335,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (searchInput) searchInput.focus();
             }, 150);
         });
+    } else {
+        console.error('btnUbicacion not found in DOM!');
     }
 
     // Live search as user types (with debounce)
