@@ -573,6 +573,41 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
+            // Send data to n8n Webhook
+            try {
+                const webhookUrl = 'https://clase-easypanel-n8n.zycrzt.easypanel.host/webhook/feramcer';
+                const webhookData = {
+                    nombre: nombre,
+                    telefono: telefono,
+                    metros: metros,
+                    altura: altura,
+                    ubicacion: {
+                        lat: ubicacionLat,
+                        lng: ubicacionLng,
+                        texto: ubicacionTexto
+                    },
+                    fecha: new Date().toISOString()
+                };
+
+                // Send beacon or fetch without waiting seriously to avoid delay, 
+                // but since we want to ensure data sending, we'll use a non-blocking fetch
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(webhookData),
+                    keepalive: true // Ensure request is sent even if page is closed/backgrounded
+                }).then(response => {
+                    console.log('Webhook sent successfully:', response.status);
+                }).catch(error => {
+                    console.error('Error sending webhook:', error);
+                });
+
+            } catch (err) {
+                console.error('Error with webhook:', err);
+            }
+
             // Build Google Maps link for the location
             const mapsLink = `https://www.google.com/maps?q=${ubicacionLat},${ubicacionLng}`;
 

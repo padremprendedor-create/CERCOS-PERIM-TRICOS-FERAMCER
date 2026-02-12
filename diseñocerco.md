@@ -1,3 +1,4 @@
+
 # diseño.md - Architect UI Premium Landing Generator
 
 ## 1. Análisis Psicológico y Estrategia Visual
