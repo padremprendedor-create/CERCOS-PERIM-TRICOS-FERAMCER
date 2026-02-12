@@ -27,7 +27,7 @@
     <header class="header header-dark">
         <div class="container header-content">
             <div class="header-brand">
-                <img src="LOGO Feramcer hd.png" alt="FERAMCER EIRL Logo" class="logo">
+                <img src="logo-feramcer.jpeg" alt="FERAMCER EIRL Logo" class="logo">
                 <span class="header-company-name">FERAMCER E.I.R.L.</span>
             </div>
             <div class="header-actions">
@@ -95,6 +95,16 @@
                                 <option value="3.00">3.00 metros</option>
                             </select>
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="urgencia">Nivel de Urgencia</label>
+                        <select id="urgencia" name="urgencia" required>
+                            <option value="">Seleccionar urgencia</option>
+                            <option value="Menos de 1 mes hábil">Menos de 1 mes hábil</option>
+                            <option value="De 1 a 3 meses">De 1 a 3 meses</option>
+                            <option value="Estoy evaluando a futuro">Estoy evaluando a futuro</option>
+                        </select>
                     </div>
 
                     <!-- Campo oculto para guardar ubicación -->
@@ -222,6 +232,141 @@
         </div>
     </section>
 
+    <!-- Sección FAQ (Preguntas Frecuentes) -->
+    <section class="faq" id="preguntas">
+        <div class="container">
+            <h2 class="section-title">Haz tu proyecto con total claridad</h2>
+            <p class="section-subtitle">Resolvemos las dudas más comunes antes de empezar.</p>
+
+            <div class="faq-container">
+                <!-- Pregunta 1 -->
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Qué datos necesitan para darme una cotización rápida?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-content">
+                            Para darte un precio estimado en cuestión de minutos, solo necesitamos tres datos
+                            principales:
+                            <ul>
+                                <li>La cantidad de metros lineales (longitud) de tu terreno.</li>
+                                <li>La altura deseada del cerco (usualmente 2.50m o 3.00m).</li>
+                                <li>La ubicación de tu proyecto.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pregunta 2 -->
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿El precio incluye la instalación?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-content">
+                            <p>Sí. Nuestros precios estándar son a "todo costo", lo que incluye los materiales
+                                prefabricados, el transporte y el servicio completo de instalación con mano de obra.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pregunta 3 -->
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Puedo comprar solo los materiales sin instalación?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-content">
+                            <p>Sí, es posible. En ese caso, al precio por metro lineal se le descuenta aproximadamente
+                                S/ 40 por metro correspondiente a la instalación. Sin embargo, recomendamos el servicio
+                                completo para garantizar el acabado.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pregunta 4 -->
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Realizan visitas técnicas antes de contratar?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-content">
+                            <p>Si el terreno es plano, está limpio y tiene fácil acceso para el camión, generalmente no
+                                es necesaria una visita previa; podemos trabajar con fotos. Realizamos visitas técnicas
+                                principalmente cuando existen desniveles o particularidades complicadas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pregunta 5 -->
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Atienden pedidos fuera de Huánuco?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-content">
+                            <p>Nuestro servicio es principalmente local (zona Huánuco). Podemos atender zonas cercanas,
+                                pero el costo de transporte puede incrementar el presupuesto final.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pregunta 6 -->
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Qué pasa si mi terreno no está nivelado?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-content">
+                            <p>Podemos realizar el trabajo. Si el terreno tiene desniveles, el costo podría aumentar
+                                aproximadamente S/ 10 por metro lineal para cubrir la nivelación y cimentación
+                                adicional.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pregunta 7 -->
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Cuánto tiempo demoran en instalar?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-content">
+                            <p>Tenemos una capacidad promedio de instalación de 10 metros lineales por día. Por ejemplo,
+                                un cerco de 30 metros puede tomar entre 3 y 4 días laborables.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pregunta 8 -->
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Con cuánta anticipación debo contratar?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-content">
+                            <p>Depende de la carga de trabajo actual. Como trabajamos proyectos de manera secuencial,
+                                recomendamos confirmar con anticipación para asegurar disponibilidad.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-cta">
+                <p class="faq-cta-text">¿Aún tienes dudas?</p>
+                <a href="#cotizacion" class="cta-button">Solicitar cotización inmediata</a>
+            </div>
+        </div>
+    </section>
+
     <!-- Sección Urgencia -->
     <section class="urgencia">
         <div class="container">
@@ -262,7 +407,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <img src="LOGO Feramcer hd.png" alt="FERAMCER EIRL Logo" class="footer-logo">
+                <img src="logo-feramcer.jpeg" alt="FERAMCER EIRL Logo" class="footer-logo">
                 <p class="footer-text">FERAMCER EIRL - Cercos Perimétricos de Concreto</p>
                 <p class="footer-copyright">© 2026 Todos los derechos reservados.</p>
             </div>
@@ -301,11 +446,89 @@
     </div>
 
 
+    <!-- Floating Navigation Dots -->
+    <nav class="floating-nav">
+        <a href="#inicio" class="nav-dot active" data-tooltip="Inicio"></a>
+        <a href="#cotizacion" class="nav-dot" data-tooltip="Cotizar"></a>
+        <a href="#por-que" class="nav-dot" data-tooltip="Por qué nosotros"></a>
+        <a href="#proceso" class="nav-dot" data-tooltip="Cómo funciona"></a>
+        <a href="#medidas" class="nav-dot" data-tooltip="Medidas"></a>
+        <a href="#confianza" class="nav-dot" data-tooltip="Confianza"></a>
+        <a href="#preguntas" class="nav-dot" data-tooltip="Preguntas Frecuentes"></a>
+        <a href="#contacto" class="nav-dot" data-tooltip="Contacto Final"></a>
+    </nav>
+
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
     <script src="script.js"></script>
+
+    <!-- Premium Confirmation Overlay -->
+    <div id="confirmationOverlay" class="confirmation-overlay">
+        <div class="confirmation-card">
+
+            <!-- Phase 1: Preparing -->
+            <div id="phase1" class="phase-content active">
+                <div class="spinner-container">
+                    <div class="spinner-ring"></div>
+                    <div class="ai-icon-pulse">✨</div>
+                </div>
+                <h3 class="phase-title">Estamos preparando tu cotización...</h3>
+                <p class="phase-subtitle">Analizando datos del proyecto</p>
+
+                <div class="progress-wrapper">
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill" id="progressBar"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span id="progressPercent">0</span>%
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 2: Success -->
+            <div id="phase2" class="phase-content">
+                <div class="success-icon-wrapper">
+                    <div class="success-circle-glow"></div>
+                    <div class="checkmark-icon">✓</div>
+                </div>
+
+                <h3 class="phase-title success-title">¡Cotización Lista!</h3>
+                <p class="phase-subtitle success-subtitle" id="dynamicSubtitle">Tu proyecto será priorizado.</p>
+
+                <div class="summary-card">
+                    <div class="summary-item">
+                        <span class="summary-label">Nombre:</span>
+                        <span class="summary-value" id="summaryNombre">--</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Metros:</span>
+                        <span class="summary-value" id="summaryMetros">--</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Altura:</span>
+                        <span class="summary-value" id="summaryAltura">--</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Ubicación:</span>
+                        <span class="summary-value" id="summaryUbicacion">--</span>
+                    </div>
+                    <div class="summary-item highlight-item">
+                        <span class="summary-label">Urgencia:</span>
+                        <span class="summary-value" id="summaryUrgencia">--</span>
+                    </div>
+                </div>
+
+                <button id="finalWhatsAppBtn" class="cta-button cta-whatsapp-final premium-pulse">
+                    Enviar cotización por WhatsApp
+                </button>
+
+                <p class="microcopy">Serás atendido de inmediato por nuestro asistente inteligente.</p>
+            </div>
+
+        </div>
+    </div>
 </body>
 
 </html>

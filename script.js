@@ -548,7 +548,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            // Save to Supabase (if available)
+            // Get Urgency Level
+            const urgencia = document.getElementById('urgencia').value;
+
+            if (!urgencia) {
+                showNotification('Por favor selecciona el nivel de urgencia.', 'error');
+                return;
+            }
+
+            // Save to Supabase (if available) - Added urgency
             if (supabaseClient) {
                 try {
                     const { error } = await supabaseClient
@@ -560,7 +568,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             metros_lineales: parseFloat(metros),
                             lat: parseFloat(ubicacionLat),
                             lng: parseFloat(ubicacionLng),
-                            direccion: ubicacionTexto
+                            direccion: ubicacionTexto,
+                            urgencia: urgencia
                         }]);
 
                     if (error) {
@@ -573,7 +582,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            // Send data to n8n Webhook
+            // Send data to n8n Webhook - Added urgency
             try {
                 const webhookUrl = 'https://clase-easypanel-n8n.zycrzt.easypanel.host/webhook/feramcer';
                 const webhookData = {
@@ -581,6 +590,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     telefono: telefono,
                     metros: metros,
                     altura: altura,
+                    urgencia: urgencia,
                     ubicacion: {
                         lat: ubicacionLat,
                         lng: ubicacionLng,
@@ -589,58 +599,137 @@ document.addEventListener('DOMContentLoaded', function () {
                     fecha: new Date().toISOString()
                 };
 
-                // Send beacon or fetch without waiting seriously to avoid delay, 
-                // but since we want to ensure data sending, we'll use a non-blocking fetch
                 fetch(webhookUrl, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(webhookData),
-                    keepalive: true // Ensure request is sent even if page is closed/backgrounded
-                }).then(response => {
-                    console.log('Webhook sent successfully:', response.status);
-                }).catch(error => {
-                    console.error('Error sending webhook:', error);
-                });
+                    keepalive: true
+                }).catch(error => console.error('Error sending webhook:', error));
 
             } catch (err) {
                 console.error('Error with webhook:', err);
             }
 
-            // Build Google Maps link for the location
-            const mapsLink = `https://www.google.com/maps?q=${ubicacionLat},${ubicacionLng}`;
+            // ==========================================
+            // START PREMIUM CONFIRMATION FLOW
+            // ==========================================
+            startPremiumConfirmation({
+                nombre,
+                metros,
+                altura,
+                urgencia,
+                ubicacionTexto,
+                telefono,
+                ubicacionLat,
+                ubicacionLng
+            });
+        });
+    }
+
+    // ==========================================
+    // PREMIUM CONFIRMATION LOGIC
+    // ==========================================
+    function startPremiumConfirmation(data) {
+        const overlay = document.getElementById('confirmationOverlay');
+        const phase1 = document.getElementById('phase1');
+        const phase2 = document.getElementById('phase2');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+
+        // Reset state
+        phase1.classList.add('active');
+        phase2.classList.remove('active');
+        progressBar.style.width = '0%';
+        progressPercent.textContent = '0';
+
+        // Show Overlay
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Animate Progress (Phase 1)
+        let progress = 0;
+        const duration = 1200; // 1.2 seconds
+        const interval = 20;
+        const steps = duration / interval;
+        const increment = 100 / steps;
+
+        const timer = setInterval(() => {
+            progress += increment;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(timer);
+
+                // Transition to Phase 2
+                setTimeout(() => {
+                    phase1.classList.remove('active');
+                    showVictoryPhase(data);
+                }, 300);
+            }
+
+            progressBar.style.width = `${progress}%`;
+            progressPercent.textContent = Math.round(progress);
+        }, interval);
+    }
+
+    function showVictoryPhase(data) {
+        const phase2 = document.getElementById('phase2');
+        const dynamicSubtitle = document.getElementById('dynamicSubtitle');
+
+        // Populate Summary
+        document.getElementById('summaryNombre').textContent = data.nombre;
+        document.getElementById('summaryMetros').textContent = `${data.metros} ml`;
+        document.getElementById('summaryAltura').textContent = `${data.altura} m`;
+        document.getElementById('summaryUbicacion').textContent = data.ubicacionTexto.split(',')[0]; // Shorten address
+        document.getElementById('summaryUrgencia').textContent = data.urgencia;
+
+        // Dynamic Subtitle based on Urgency
+        if (data.urgencia === 'Menos de 1 mes hábil') {
+            dynamicSubtitle.textContent = 'Tu proyecto será priorizado.';
+        } else if (data.urgencia === 'De 1 a 3 meses') {
+            dynamicSubtitle.textContent = 'Estamos listos para planificar contigo.';
+        } else {
+            dynamicSubtitle.textContent = 'Te enviaremos información detallada.';
+        }
+
+        // Show Phase 2
+        phase2.classList.add('active');
+
+        // Configure Final Button
+        const finalBtn = document.getElementById('finalWhatsAppBtn');
+
+        // Remove old listeners (cloning is a quick hack to clear listeners)
+        const newBtn = finalBtn.cloneNode(true);
+        finalBtn.parentNode.replaceChild(newBtn, finalBtn);
+
+        newBtn.addEventListener('click', () => {
+            // Build Google Maps link
+            const mapsLink = `https://www.google.com/maps?q=${data.ubicacionLat},${data.ubicacionLng}`;
 
             // Build WhatsApp message
             const message = `🏗️ *NUEVA SOLICITUD DE COTIZACIÓN*
 
-👤 *Nombre:* ${nombre}
-📱 *WhatsApp:* ${telefono}
-📏 *Metros lineales:* ${metros} m
-📐 *Altura deseada:* ${altura} m
+👤 *Nombre:* ${data.nombre}
+📱 *WhatsApp:* ${data.telefono}
+📏 *Metros lineales:* ${data.metros} m
+📐 *Altura deseada:* ${data.altura} m
+🚨 *Urgencia:* ${data.urgencia}
 
 📍 *Ubicación del proyecto:*
-${ubicacionTexto || 'Ver en mapa'}
+${data.ubicacionTexto || 'Ver en mapa'}
 🗺️ ${mapsLink}
 
 _Solicitud enviada desde la web FERAMCER_`;
 
-            // Encode message for WhatsApp URL
-            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/51999888777?text=${encodeURIComponent(message)}`;
 
-            // WhatsApp business number (replace with actual number)
-            const whatsappNumber = '51999888777'; // Formato: código país + número
+            window.open(whatsappURL, '_blank');
 
-            // Create WhatsApp URL
-            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-
-            // Show success notification
-            showNotification('¡Perfecto! Te redirigimos a WhatsApp...', 'success');
-
-            // Open WhatsApp in new tab after short delay
-            setTimeout(() => {
-                window.open(whatsappURL, '_blank');
-            }, 800);
+            // Optional: Close overlay after a while or show "Sent" state
+            // setTimeout(() => {
+            //    document.getElementById('confirmationOverlay').classList.remove('active');
+            //    document.body.style.overflow = '';
+            //    quoteForm.reset();
+            // }, 2000);
         });
     }
 
@@ -799,6 +888,46 @@ _Solicitud enviada desde la web FERAMCER_`;
         animateOnScroll.observe(section);
     });
 
+    // ==========================================
+    // FAQ ACCORDION FUNCTIONALITY
+    // ==========================================
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+
+        question.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+
+            // Close all other items
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                    otherItem.querySelector('.faq-answer').style.maxHeight = null;
+                }
+            });
+
+            // Toggle current item
+            if (isActive) {
+                item.classList.remove('active');
+                answer.style.maxHeight = null;
+            } else {
+                item.classList.add('active');
+                // Calculate height dynamically
+                answer.style.maxHeight = answer.scrollHeight + "px";
+            }
+        });
+    });
+
+    // Add FAQ section to animate on scroll
+    const faqSection = document.querySelector('.faq');
+    if (faqSection) {
+        faqSection.classList.add('animate-target');
+        animateOnScroll.observe(faqSection);
+    }
+
+
     // Observe step cards - they already have opacity:0 in CSS
     // Just add animate-in class when they come into view
     const stepCards = document.querySelectorAll('.step-card');
@@ -844,5 +973,51 @@ _Solicitud enviada desde la web FERAMCER_`;
     // ==========================================
     console.log('%c FERAMCER EIRL ', 'background: #1a1a1a; color: #f97316; font-size: 20px; font-weight: bold; padding: 10px 20px;');
     console.log('%c Cercos Perimétricos de Concreto ', 'color: #6b7280; font-size: 12px;');
+
+    // ==========================================
+    // FLOATING NAV SCROLL SPY
+    // ==========================================
+    const navDots = document.querySelectorAll('.nav-dot');
+    const sections = document.querySelectorAll('section, header');
+
+    // Options for Intersection Observer
+    const observerOptionsSpy = {
+        root: null,
+        rootMargin: '-50% 0px -50% 0px', // Trigger when section is in middle of viewport
+        threshold: 0
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Get id of current section
+                const id = entry.target.getAttribute('id');
+                if (id) {
+                    // Remove active from all dots
+                    navDots.forEach(dot => dot.classList.remove('active'));
+
+                    // Add active to corresponding dot
+                    const activeDot = document.querySelector(`.nav-dot[href="#${id}"]`);
+                    if (activeDot) {
+                        activeDot.classList.add('active');
+                    }
+                }
+            }
+        });
+    }, observerOptionsSpy);
+
+    sections.forEach(section => {
+        sectionObserver.observe(section);
+    });
+
+    // Smooth scroll for dots (handled by CSS, but ensure click updates active immediately)
+    navDots.forEach(dot => {
+        dot.addEventListener('click', function (e) {
+            // Remove active from all
+            navDots.forEach(d => d.classList.remove('active'));
+            // Add active to clicked
+            this.classList.add('active');
+        });
+    });
 
 });
